@@ -17,10 +17,16 @@
     // atlas token for opencode (identity: claude-code), read-only, never in git
     "source=${localEnv:HOME}/.config/atlas-tokens/claude-code,target=/opt/secrets/atlas-token,type=bind,readonly",
     // Claude Code login and history, kept across rebuilds (one volume per folder name)
-    "source=claude-home-${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=volume"
+    "source=claude-home-${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=volume",
+    // .venv for Linux, kept apart from the host folder's copy (filled by .devcontainer/setup.sh)
+    "source=venv-${localWorkspaceFolderBasename},target=${containerWorkspaceFolder}/.venv,type=volume"
   ],
   "containerEnv": {
-    "OPENCODE_DISABLE_CLAUDE_CODE_SKILLS": "1"
+    "OPENCODE_DISABLE_CLAUDE_CODE_SKILLS": "1",
+    "TEST_DATABASE_URL": "postgresql+psycopg://betterread:betterread@localhost:5432/betterread"
   },
-  "postCreateCommand": "bash /opt/devcontainer/install.sh"
+  // install.sh also runs this repo's .devcontainer/setup.sh (dependencies, test database)
+  "postCreateCommand": "bash /opt/devcontainer/install.sh",
+  // containers have no init: start the test Postgres each time
+  "postStartCommand": "/opt/devcontainer/bin/pg-start"
 }
