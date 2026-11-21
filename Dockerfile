@@ -6,10 +6,11 @@ WORKDIR /app
 
 # Install deps first so this layer is cached when only app code changes
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir --upgrade pip setuptools wheel && pip install --no-cache-dir -r requirements.txt
 
-# postgresql-client provides pg_dump for scripts/backup.py
+# postgresql-client provides pg_dump for scripts/backup.py; upgrade = OS security fixes (moon image scan)
 RUN apt-get update \
+ && apt-get upgrade -y --no-install-recommends \
  && apt-get install -y --no-install-recommends postgresql-client \
  && rm -rf /var/lib/apt/lists/*
 
