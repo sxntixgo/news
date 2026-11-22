@@ -16,6 +16,8 @@
     "source=${localEnv:HOME}/Dev/skills-and-orchestration,target=/opt/skills,type=bind,readonly",
     // atlas token for opencode (identity: claude-code), read-only, never in git
     "source=${localEnv:HOME}/.config/atlas-tokens/claude-code,target=/opt/secrets/atlas-token,type=bind,readonly",
+    // todo app token (Claude's existing token on puck: lists + tasks, no settings), read-only, never in git
+    "source=${localEnv:HOME}/.claude/todo-api-token,target=/opt/secrets/todo-token,type=bind,readonly",
     // Claude Code login and history, kept across rebuilds (one volume per folder name)
     "source=claude-home-${localWorkspaceFolderBasename},target=/home/vscode/.claude,type=volume",
     // .venv for Linux, kept apart from the host folder's copy (filled by .devcontainer/setup.sh)
