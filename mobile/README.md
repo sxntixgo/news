@@ -41,14 +41,13 @@ it. See `shared/api.ts`, which both clients import.
 A block group with a non-null `aside` is older-news padding: it collapses behind
 a toggle and is never dropped, matching the web reader.
 
-## The `@shared` alias needs three things
+## The `@shared` alias needs two things
 
-`metro.config.js` needs `watchFolders`, a `resolveRequest` mapping, **and**
-`experiments.onDemandFilesystem: false`. Expo's `withMetroMultiPlatform` resets
-`watchFolders` to the project root when exporting with the on-demand filesystem
-enabled, so `expo start` resolves `@shared/api` while `expo export` fails
-claiming the file does not exist. Changing any one of the three breaks the
-export but not the dev server.
+`metro.config.js` needs `watchFolders` **and** a `resolveRequest` mapping.
+Dropping either one breaks `expo export` (the production bundle) even when
+`expo start` still resolves `@shared/api`. Before SDK 58 a third setting,
+`experiments.onDemandFilesystem: false`, was needed too; SDK 58 removed that
+filesystem mode, so the setting is gone.
 
 ## Tests, and what they do not cover
 
