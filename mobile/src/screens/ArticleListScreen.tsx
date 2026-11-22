@@ -77,7 +77,7 @@ export function ArticleListScreen() {
               <ActivityIndicator style={styles.footer} />
             ) : list.atEnd && list.articles.length > 0 ? (
               <Text style={styles.footerText}>That is everything.</Text>
-            ) : null
+            ) : undefined
           }
           contentContainerStyle={
             list.articles.length === 0 ? styles.emptyContainer : undefined
