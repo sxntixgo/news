@@ -16,6 +16,8 @@ RUN npm run build
 FROM caddy:2-alpine
 # Caddy rather than nginx: the stack already speaks Caddy, and one server to
 # understand is worth more than a marginally smaller image.
+# Alpine security fixes newer than the base image (moon image scan)
+RUN apk upgrade --no-cache
 COPY --from=build /build/dist /srv
 COPY web/Caddyfile /etc/caddy/Caddyfile
 EXPOSE 8080
